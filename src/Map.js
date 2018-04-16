@@ -23,7 +23,7 @@ class Map extends Component {
 
   componentWillMount() {
     this.props.busActions.fetchBuses();
-    setInterval(this.props.busActions.fetchBuses, 100000);
+    setInterval(this.props.busActions.fetchBuses, 1000);
   }
 
   render() {
