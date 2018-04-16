@@ -1,31 +1,30 @@
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as busActions from './actions/busActions';
+import Bus from './Bus.js';
 import React, {Component} from 'react';
 import ReactMapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const request = require('superagent');
-
-request
-  .get('/rttiapi/v1/buses')
-  .query({ apikey: process.env.REACT_APP_TRANSLINK_KEY })
-  .set('Accept', 'application/json')
-  .withCredentials()
-  .end((err, res) => {
-    // Calling the end function will send the request
-    console.log(err);
-    console.log(res.body);
-  });
 
 class Map extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewport: {
+        width: 1000,
+        height: 600,
+        latitude: 49.2827,
+        longitude: -123.1207,
+        zoom: 10
+      }
+    };
+  }
 
-  state = {
-    viewport: {
-      width: 400,
-      height: 400,
-      latitude: 49.2827,
-      longitude: -123.1207,
-      zoom: 10
-    }
-  };
+  componentWillMount() {
+    this.props.busActions.fetchBuses();
+    setInterval(this.props.busActions.fetchBuses, 100000);
+  }
 
   render() {
     return (
@@ -33,9 +32,27 @@ class Map extends Component {
         {...this.state.viewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={(viewport) => this.setState({viewport})}
-      />
+      >
+        {this.props.buses.map((bus) => <Bus {...bus} key={bus.VehicleNo} />)}
+      </ReactMapGL>
     );
   }
 }
 
-export default Map;
+
+function mapStateToProps(state) {
+  return {
+    buses: state.buses
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    busActions: bindActionCreators(busActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Map);
