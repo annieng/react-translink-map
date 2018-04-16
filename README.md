@@ -1,7 +1,7 @@
 # React Translink Map
 A live-updating map of the buses on the Metro Vancouver [Translink](https://www.translink.ca/) network. Built with React and Redux, with use of [`react-map-gl`](https://github.com/uber/react-map-gl).
 
-A live demo is [here](https://react-translink-map.herokuapp.com/).
+A live demo is [here](https://react-translink-map.herokuapp.com/). Watch the buses move around or click the little teal icons for more information about that bus!
 
 ### Run locally
 Run `yarn install` to install dependencies.
