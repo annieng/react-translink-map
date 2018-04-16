@@ -9,7 +9,7 @@ export function receiveBuses(json) {
 export function fetchBuses() {
   return dispatch => {
     return request
-    .get('/rttiapi/v1/buses')
+    .get('https://guisers-cors-proxy.herokuapp.com/http://api.translink.ca/rttiapi/v1/buses')
     .query({ apikey: process.env.REACT_APP_TRANSLINK_KEY })
     .set('Accept', 'application/json')
     .then(res => res.body)
